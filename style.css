@@ -1,0 +1,961 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+  background-color: #d9c3b0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  margin: 0;
+}
+
+/* --- CENTRALIZAÇÃO DO JOGO --- */
+#game-container {
+  width: 1000px;
+  height: 600px;
+  background-image: url('assets/mapa.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -300px;
+  margin-left: -500px;
+  transform-origin: center center;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+#character {
+  width: 250px;
+  height: auto;
+  position: absolute;
+  top: 100px;
+  left: 95px;
+  transition: all 0.6s ease-in-out;
+  z-index: 10;
+  pointer-events: none;
+}
+
+#character img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* --- HITBOXES (Âncoras interativas) --- */
+.hitbox {
+  width: 80px;
+  height: 80px;
+  background-color: transparent;
+  position: absolute;
+  cursor: pointer;
+  border: none;
+  z-index: 20;
+}
+
+#hitbox-sobre {
+  top: 100px;
+  left: 165px;
+}
+
+#hitbox-skills {
+  top: 140px;
+  left: 450px;
+}
+
+#hitbox-projetos {
+  top: 350px;
+  left: 420px;
+}
+
+#hitbox-porto {
+  top: 300px;
+  left: 720px;
+}
+
+/* --- CAIXAS DE DIÁLOGO FLUTUANTES --- */
+.caixa-dialogo {
+  position: absolute;
+  bottom: 85px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  background-color: #fff;
+  border: 3px solid #333;
+  border-radius: 12px;
+  padding: 6px 14px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  white-space: nowrap;
+  box-shadow: 0px 5px 0px rgba(0, 0, 0, 0.3);
+
+  animation: flutuar 2s ease-in-out infinite;
+  pointer-events: auto;
+}
+
+.caixa-dialogo:hover {
+  background-color: #fcf8e3;
+}
+
+.icone-dialogo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  transform: scale(1.8);
+  margin-right: 5px;
+}
+
+.texto-dialogo {
+  font-family: 'VT323', monospace;
+  font-size: 24px;
+  color: #333;
+  margin-top: 4px;
+}
+
+@keyframes flutuar {
+
+  0%,
+  100% {
+    transform: translate(-50%, 0px);
+  }
+
+  50% {
+    transform: translate(-50%, -12px);
+  }
+}
+
+/* --- MODAIS DE INFORMAÇÃO --- */
+.hidden {
+  display: none !important;
+}
+
+#modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2500;
+}
+
+/* Visual Pergaminho/RPG do Modal */
+.modal-content {
+  background-color: #fcf8e3;
+  border: 6px solid #8b5a2b;
+  border-radius: 4px;
+  padding: 30px;
+  width: 450px;
+  /* Alarguei um pouquinho para acomodar a ficha */
+  position: relative;
+  box-shadow: inset 0 0 10px rgba(139, 90, 43, 0.3), 0 10px 30px rgba(0, 0, 0, 0.5);
+  background-image: repeating-linear-gradient(transparent, transparent 2px, rgba(0, 0, 0, 0.02) 2px, rgba(0, 0, 0, 0.02) 4px);
+}
+
+.close-btn {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  background: #e74c3c;
+  color: #fff;
+  border: 3px solid #333;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px #000;
+}
+
+/* Título Geral dos Modais */
+.titulo-modal {
+  font-family: 'VT323', monospace;
+  font-size: 38px;
+  text-align: center;
+  text-transform: uppercase;
+  border-bottom: 4px dashed #8b5a2b;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Textos padrões (quando a seção não for ficha/árvore) */
+.texto-padrao p {
+  font-size: 20px;
+  text-align: center;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+/* --- ESTILOS DA FICHA DE PERSONAGEM (SOBRE MIM) --- */
+.ficha-personagem {
+  font-family: 'VT323', Courier, monospace;
+  color: #333;
+  text-align: center;
+}
+
+.ficha-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.ficha-bloco {
+  flex: 1;
+}
+
+.ficha-label {
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+  color: #8b5a2b;
+}
+
+.ficha-valor {
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.ficha-avatar {
+  width: 100px;
+  height: 100px;
+  border: 4px solid #8b5a2b;
+  /* Troque a cor #333 por este marrom da sua paleta */
+  border-radius: 50%;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin: 0 15px;
+  /* Adicionando um brilho sutil para destacar a foto */
+  box-shadow: 0 0 10px rgba(139, 90, 43, 0.4), inset 0px 4px 0px rgba(255, 255, 255, 0.3);
+}
+
+.ficha-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Garante que a foto preencha o círculo sem amassar */
+}
+
+.ficha-nivel {
+  margin: 20px 0;
+}
+
+.nivel-texto {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.barra-fundo {
+  width: 100%;
+  height: 20px;
+  background-color: #ddd;
+  border: 3px solid #333;
+  border-radius: 10px;
+  position: relative;
+}
+
+.barra-progresso {
+  height: 100%;
+  background-color: #3b82f6;
+  position: relative;
+  box-shadow: inset 0px -4px 0px rgba(0, 0, 0, 0.2);
+}
+
+.exp-tag {
+  position: absolute;
+  left: -5px;
+  top: -8px;
+  background: #fff;
+  border: 2px solid #333;
+  font-size: 14px;
+  padding: 0 4px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.divisor-rpg {
+  color: #8b5a2b;
+  font-size: 18px;
+  letter-spacing: 2px;
+  margin: 20px 0;
+  opacity: 0.6;
+}
+
+.ficha-secao {
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.secao-titulo {
+  font-size: 26px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.ficha-secao p {
+  font-size: 22px;
+  line-height: 1.3;
+  text-align: center;
+}
+
+/* --- O NAVIO --- */
+#ship {
+  width: 150px;
+  position: absolute;
+  top: 350px;
+  left: 710px;
+  z-index: 5;
+  transition: transform 4s ease-in, opacity 4s ease-in;
+}
+
+#ship img {
+  width: 100%;
+  display: block;
+}
+
+.zarpar {
+  transform: translate(-600px, 300px);
+  opacity: 0;
+}
+
+/* --- TELA DE CONTATOS FINAL --- */
+#contact-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'VT323', monospace;
+  z-index: 3000;
+}
+
+.painel-absoluto {
+  position: relative;
+  width: 1200px;
+  flex-shrink: 0;
+  transform-origin: center center;
+}
+
+.imagem-guia {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.camada-interativa {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.posicao-github {
+  position: absolute;
+  top: 59%;
+  left: 35.8%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+}
+
+.posicao-linkedin {
+  position: absolute;
+  top: 59%;
+  left: 64.5%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+}
+
+.posicao-email {
+  position: absolute;
+  top: 54%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 5;
+}
+
+.posicao-jogar {
+  position: absolute;
+  bottom: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.qr-imagem {
+  width: 100px;
+  height: auto;
+  mix-blend-mode: multiply;
+  border-radius: 10px;
+}
+
+.link-qr {
+  display: inline-block;
+  transition: transform 0.2s ease;
+  margin-bottom: 5px;
+}
+
+.link-qr:hover {
+  transform: scale(1.08);
+  cursor: pointer;
+}
+
+.texto-email {
+  font-size: 13.6px;
+  letter-spacing: -0.5px;
+  color: #3e1f0e;
+  font-weight: bold;
+  margin-bottom: 12px;
+  white-space: nowrap;
+}
+
+.etiqueta-texto {
+  font-family: 'VT323', monospace;
+  font-size: 28px;
+  color: #fca835;
+  margin-top: 8px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  text-shadow: 2px 2px 0px #000, -2px -2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000, 0px 2px 0px #000, 0px -2px 0px #000, 2px 0px 0px #000, -2px 0px 0px #000;
+}
+
+.btn-pixel {
+  font-family: 'VT323', monospace;
+  font-size: 24px;
+  color: white;
+  padding: 6px 12px;
+  border: 3px solid #000;
+  cursor: pointer;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0px #000;
+  border-radius: 6px;
+  transition: transform 0.1s;
+}
+
+.btn-pixel:active {
+  transform: translate(2px, 2px);
+}
+
+.btn-vermelho {
+  background-color: #d13c27;
+  font-size: clamp(1rem, 1.8vw, 1.5rem);
+  padding: 10px 20px;
+}
+
+.btn-azul {
+  background-color: #2a82d4;
+  box-shadow: inset -3px -3px 0px rgba(0, 0, 0, 0.3);
+  padding: 4px 12px;
+  font-size: 18px;
+}
+
+/* --- TELA INICIAL COM BLUR E DIGITAÇÃO --- */
+#start-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 4000;
+  transition: opacity 1s ease-out;
+  cursor: pointer;
+  font-family: 'VT323', monospace;
+  color: white;
+}
+
+.start-title {
+  font-size: 80px;
+  color: #fca835;
+  text-shadow: 4px 4px 0px #000;
+  margin-bottom: -10px;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 5px solid #fca835;
+  width: 16ch;
+  animation: typing 1.5s steps(16, end), blink-cursor 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 16ch;
+  }
+}
+
+@keyframes blink-cursor {
+
+  from,
+  to {
+    border-color: transparent;
+  }
+
+  50% {
+    border-color: #fca835;
+  }
+}
+
+.start-subtitle {
+  font-size: 35px;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 0px #000;
+  margin-bottom: 50px;
+  color: white;
+}
+
+.controls-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 50px;
+  color: white;
+}
+
+.controls-hint p {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #2ecc71;
+  text-shadow: 2px 2px 0px #000;
+}
+
+.controles-animados {
+  width: 250px;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.press-start-text {
+  font-size: 30px;
+  animation: piscar 1.5s infinite;
+  text-shadow: 2px 2px 0px #000;
+}
+
+@keyframes piscar {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* --- HUD SUPERIOR E INFERIOR --- */
+.hud-container {
+  background-color: #f2f2f2;
+  border: 4px solid #333;
+  border-radius: 16px;
+  box-shadow: 0px 6px 0px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  z-index: 1500;
+}
+
+#hud-top {
+  position: fixed;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 30px;
+  gap: 20px;
+}
+
+.nav-link {
+  background: transparent;
+  border: none;
+  font-family: 'VT323', monospace;
+  font-size: 26px;
+  color: #222;
+  cursor: pointer;
+  transition: transform 0.1s, color 0.1s;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  transform: translateY(-2px);
+  color: #fca835;
+}
+
+.nav-link.active-tab {
+  color: #d13c27;
+  font-weight: bold;
+  transform: scale(1.05);
+}
+
+.nav-divider {
+  width: 2px;
+  height: 22px;
+  background-color: #ccc;
+}
+
+#hud-bottom {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 15px;
+  gap: 15px;
+}
+
+.progress-dots {
+  display: flex;
+  gap: 12px;
+  margin: 0 10px;
+}
+
+.dot {
+  width: 22px;
+  height: 22px;
+  background-color: #9ac2d9;
+  border: 3px solid #333;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
+
+.dot.active {
+  background-color: #4a7c99;
+}
+
+.arrow-btn {
+  background-color: #fff;
+  border: 3px solid #8b3a3a;
+  color: #8b3a3a;
+  border-radius: 8px;
+  width: 45px;
+  height: 35px;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0px 4px 0px #8b3a3a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.arrow-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0px 0px 0px #8b3a3a;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 1100px) {
+  #game-container {
+    transform: scale(0.85);
+  }
+
+  .painel-absoluto {
+    transform: scale(0.75);
+  }
+}
+
+@media (max-width: 850px) {
+  #game-container {
+    transform: scale(0.75);
+  }
+
+  .painel-absoluto {
+    transform: scale(0.65);
+  }
+
+  #hud-top {
+    width: 95vw;
+    padding: 8px 15px;
+    gap: 12px;
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+
+  #hud-top::-webkit-scrollbar {
+    display: none;
+  }
+
+  #hud-bottom {
+    width: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .start-title {
+    font-size: 38px;
+    margin-bottom: 5px;
+  }
+
+  .start-subtitle {
+    font-size: 18px;
+    margin-bottom: 25px;
+  }
+
+  .controls-hint p {
+    font-size: 15px;
+  }
+
+  .controles-animados {
+    width: 140px;
+  }
+
+  .press-start-text {
+    font-size: 16px;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  #game-container {
+    transform: scale(0.50);
+  }
+
+  .painel-absoluto {
+    transform: scale(0.48);
+  }
+
+  .nav-link {
+    font-size: 20px;
+  }
+
+  .modal-content {
+    width: 90vw;
+    padding: 15px;
+  }
+
+  /* Modal menor no celular */
+}
+
+@media (max-width: 400px) {
+  #game-container {
+    transform: scale(0.42);
+  }
+
+  .painel-absoluto {
+    transform: scale(0.38);
+  }
+}
+
+/* --- ÁRVORE DE HABILIDADES (SKILLS) --- */
+.habilidades-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: left;
+  /* Adicionando barra de rolagem caso o conteúdo passe da tela */
+  max-height: 450px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Estilizando a barra de rolagem do modal para manter o estilo pixelado */
+.habilidades-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.habilidades-container::-webkit-scrollbar-track {
+  background: #e0d5c1;
+  border-left: 2px solid #8b5a2b;
+}
+
+.habilidades-container::-webkit-scrollbar-thumb {
+  background: #8b5a2b;
+  border: 2px solid #333;
+}
+
+.skill-category {
+  background-color: rgba(0, 0, 0, 0.03);
+  border: 2px dashed #8b5a2b;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.skill-cat-title {
+  font-family: 'VT323', monospace;
+  font-size: 26px;
+  color: #d13c27;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+}
+
+.skill-nodes {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+/* As Caixinhas de Habilidade */
+.skill-node {
+  background: #fff;
+  border: 3px solid #333;
+  border-radius: 8px;
+  padding: 10px;
+  width: 115px;
+  text-align: center;
+  box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8);
+  position: relative;
+  transition: transform 0.2s;
+}
+
+.skill-node:hover {
+  transform: translateY(-3px);
+}
+
+/* Habilidades que você ainda vai aprender (Cinza/Bloqueado) */
+.skill-node.locked {
+  background: #ccc;
+  filter: grayscale(100%);
+  border-color: #666;
+  box-shadow: 3px 3px 0px #666;
+  opacity: 0.8;
+}
+
+/* Tamanho fixo do ícone (deve ser menor que os 115px da caixa principal) */
+.skill-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 10px auto;
+  /* Centraliza horizontalmente e dá margem embaixo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* O ícone obedece ao tamanho definido acima sem distorcer */
+.skill-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.skill-name {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: 16px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Barrinha de progresso da habilidade */
+.skill-bar {
+  width: 100%;
+  height: 10px;
+  background-color: #ddd;
+  border: 2px solid #333;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  overflow: hidden;
+}
+
+.skill-fill {
+  height: 100%;
+  background-color: #2ecc71;
+}
+
+.skill-lvl,
+.skill-status {
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  color: #555;
+}
+
+.skill-status {
+  color: #d13c27;
+  font-weight: bold;
+}
+
+/* Habilidades Passivas */
+.passivas-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.passiva-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background-color: rgba(255, 255, 255, 0.6);
+  border: 3px solid #8b5a2b;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.passiva-icon {
+  font-size: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.passiva-nome {
+  font-family: 'VT323', monospace;
+  font-size: 26px;
+  color: #2a82d4;
+  margin-bottom: 2px;
+}
+
+.passiva-desc {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 15px;
+  line-height: 1.3;
+  font-weight: bold;
+  color: #444;
+}

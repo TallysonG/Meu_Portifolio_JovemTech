@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Portfólio Game - Tallyson Gleider</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- HUD Superior (Com divisores e indicador de ativo) -->
+  <nav id="hud-top" class="hud-container">
+    <button class="nav-link" id="link-sobre" onclick="moveTo('sobre')">Sobre Mim</button>
+    <div class="nav-divider"></div>
+    <button class="nav-link" id="link-skills" onclick="moveTo('skills')">Habilidades</button>
+    <div class="nav-divider"></div>
+    <button class="nav-link" id="link-projetos" onclick="moveTo('projetos')">Projetos</button>
+    <div class="nav-divider"></div>
+    <button class="nav-link" id="link-porto" onclick="moveTo('porto')">O Porto</button>
+  </nav>
+
+  <!-- HUD Inferior (Bolinhas e Setas Retrô) -->
+  <div id="hud-bottom" class="hud-container">
+    <button class="arrow-btn" onclick="moveArrow('left')">◀</button>
+
+    <div class="progress-dots">
+      <span class="dot" id="dot-sobre"></span>
+      <span class="dot" id="dot-skills"></span>
+      <span class="dot" id="dot-projetos"></span>
+      <span class="dot" id="dot-porto"></span>
+    </div>
+
+    <button class="arrow-btn" onclick="moveArrow('right')">▶</button>
+  </div>
+
+  <div id="game-container">
+    <div id="map">
+      <!-- O Navio -->
+      <div id="ship">
+        <img src="assets/navio.png" alt="Navio de Partida">
+      </div>
+      <!-- O Personagem -->
+      <div id="character">
+        <img src="assets/novo-personagem.png" alt="Avatar Tallyson">
+      </div>
+
+      <!-- Zonas Clicáveis / Caixas de diálogo interativas -->
+      <div class="hitbox" id="hitbox-sobre" onclick="moveTo('sobre')">
+        <div class="caixa-dialogo">
+          <img src="assets/icone-sobre.png" class="icone-dialogo" alt="Sobre Mim">
+          <span class="texto-dialogo">Sobre Mim</span>
+        </div>
+      </div>
+
+      <div class="hitbox" id="hitbox-skills" onclick="moveTo('skills')">
+        <div class="caixa-dialogo">
+          <img src="assets/icone-skills.png" class="icone-dialogo" alt="Habilidades">
+          <span class="texto-dialogo">Habilidades</span>
+        </div>
+      </div>
+
+      <div class="hitbox" id="hitbox-projetos" onclick="moveTo('projetos')">
+        <div class="caixa-dialogo">
+          <img src="assets/icone-projetos.png" class="icone-dialogo" alt="Projetos">
+          <span class="texto-dialogo">Projetos</span>
+        </div>
+      </div>
+
+      <div class="hitbox" id="hitbox-porto" onclick="moveTo('porto')">
+        <div class="caixa-dialogo">
+          <img src="assets/icone-porto.png" class="icone-dialogo" alt="O Porto">
+          <span class="texto-dialogo">O Porto</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tela Inicial com Blur e Animação de Digitação -->
+  <div id="start-overlay">
+    <h1 class="start-title">Tallyson Gleider</h1>
+    <h2 class="start-subtitle">dev back-end</h2>
+
+    <div class="controls-hint">
+      <p>Use para navegar:</p>
+      <img src="assets/gifInicial.gif" alt="Controles de Navegação" class="controles-animados">
+    </div>
+
+    <p class="press-start-text">Pressione qualquer tecla para iniciar...</p>
+  </div>
+
+  <!-- Modais de Informação (Agora é apenas uma "carcaça" vazia) -->
+  <div id="modal-container" class="hidden">
+    <div class="modal-content">
+      <button onclick="closeModal()" class="close-btn">X</button>
+      <!-- O conteúdo das páginas será injetado aqui dentro -->
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- --- TELA DE CONTATOS FINAL (DIÁRIO DE BORDO) --- -->
+  <div id="contact-screen" class="hidden">
+    <div class="painel-absoluto">
+      <img src="assets/ImagemFinal.png" class="imagem-guia" alt="Fundo Diário de Bordo">
+      <div class="camada-interativa">
+        <div class="posicao-github">
+          <a href="https://github.com/TallysonG" target="_blank" class="link-qr">
+            <img class="qr-imagem" src="assets/qrgithub.png" alt="QR GitHub">
+          </a>
+          <span class="etiqueta-texto">GitHub</span>
+        </div>
+        <div class="posicao-email">
+          <div class="texto-email">gleider.tallyson0@email.com</div>
+          <button class="btn-pixel btn-azul" onclick="copiarEmail()">Copiar E-mail 📋</button>
+        </div>
+        <div class="posicao-linkedin">
+          <a href="https://linkedin.com/in/tallysongleider" target="_blank" class="link-qr">
+            <img class="qr-imagem" src="assets/qrlinkedin.png" alt="QR LinkedIn">
+          </a>
+          <span class="etiqueta-texto">LinkedIn</span>
+        </div>
+        <div class="posicao-jogar">
+          <button class="btn-pixel btn-vermelho" onclick="reiniciarJogo()">JOGAR NOVAMENTE ↻</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- TEMPLATES DAS PÁGINAS (Ficam escondidos no código)        -->
+  <!-- ========================================================= -->
+  <div id="templates" class="hidden">
+
+    <!-- TEMPLATE: SOBRE MIM (Ficha de Personagem) -->
+    <div id="template-sobre">
+      <h2 class="titulo-modal">FICHA DO PERSONAGEM</h2>
+      <div class="ficha-personagem">
+        <div class="ficha-header">
+          <div class="ficha-bloco">
+            <span class="ficha-label">PLAYER</span>
+            <span class="ficha-valor">Tallyson<br>(_gleider)</span>
+          </div>
+          <div class="ficha-avatar">
+            <!-- Substitua pelo seu avatar em pixel art baixado -->
+            <img src="assets/sobre_eu.png" alt="Avatar Tallyson">
+          </div>
+          <div class="ficha-bloco">
+            <span class="ficha-label">CLASSE</span>
+            <span class="ficha-valor">Estudante<br>de Eng. de<br>Software</span>
+          </div>
+        </div>
+
+        <div class="ficha-nivel">
+          <!-- Texto atualizado para o 1º Período -->
+          <div class="nivel-texto">NÍVEL: 1º Período (EXP 250/2000)</div>
+          <div class="barra-fundo">
+            <!-- Largura (width) da barra ajustada para 12.5% -->
+            <div class="barra-progresso" style="width: 12.5%;">
+              <span class="exp-tag">EXP</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="divisor-rpg">⚙️ ──────── ⚙️ ──────── ⚙️</div>
+
+        <div class="ficha-secao">
+          <h3 class="secao-titulo">☕ MISSÃO ATUAL ⚙️</h3>
+          <p>Transformar lógica e código em soluções reais e escaláveis.</p>
+        </div>
+
+        <div class="divisor-rpg">⚙️ ──────── ⚙️ ──────── ⚙️</div>
+
+        <div class="ficha-secao">
+          <h3 class="secao-titulo">&lt;/&gt; BACKGROUND 🕹️</h3>
+          <p>Sou um desenvolvedor em formação apaixonado por criar interfaces interativas e resolver problemas
+            complexos. Gosto de desafios que me façam subir de nível todos os dias.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEMPLATE: HABILIDADES -->
+    <div id="template-skills">
+      <h2 class="titulo-modal">ÁRVORE DE HABILIDADES</h2>
+
+      <div class="habilidades-container">
+
+        <!-- Categoria 1: Front-end Base -->
+        <div class="skill-category">
+          <h3 class="skill-cat-title">Fundamentos Web</h3>
+          <div class="skill-nodes">
+            <!-- HTML -->
+            <div class="skill-node active">
+              <span class="skill-icon"><img src="assets/hab_html.png" alt="HTML"></span>
+              <span class="skill-name">HTML</span>
+              <div class="skill-bar">
+                <div class="skill-fill" style="width: 25%;"></div>
+              </div>
+              <span class="skill-lvl">Nv. 1 (Iniciante)</span>
+            </div>
+            <!-- CSS -->
+            <div class="skill-node active">
+              <span class="skill-icon"><img src="assets/hab_css.png" alt="CSS"></span>
+              <span class="skill-name">CSS</span>
+              <div class="skill-bar">
+                <div class="skill-fill" style="width: 25%;"></div>
+              </div>
+              <span class="skill-lvl">Nv. 1 (Iniciante)</span>
+            </div>
+            <!-- JavaScript -->
+            <div class="skill-node active">
+              <span class="skill-icon"><img src="assets/hab_js.png" alt="JavaScript"></span>
+              <span class="skill-name">JavaScript</span>
+              <div class="skill-bar">
+                <div class="skill-fill" style="width: 20%;"></div>
+              </div>
+              <span class="skill-lvl">Nv. 1 (Iniciante)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categoria 2: Ferramentas -->
+        <div class="skill-category">
+          <h3 class="skill-cat-title">Inventário & Save States</h3>
+          <div class="skill-nodes">
+            <div class="skill-node active">
+              <span class="skill-icon"><img src="assets/hab_git.png" alt="Git"></span>
+              <span class="skill-name">Git/GitHub</span>
+              <div class="skill-bar">
+                <div class="skill-fill" style="width: 35%;"></div>
+              </div>
+              <span class="skill-lvl">Nv. 1 (Funcional)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categoria 3: Próximas Missões (Back-end) -->
+        <div class="skill-category">
+          <h3 class="skill-cat-title">A Rota do Back-end (Próximas Missões)</h3>
+          <div class="skill-nodes">
+            <div class="skill-node locked">
+              <span class="skill-icon"><img src="assets/hab_phyton.png" alt="Python"></span>
+              <span class="skill-name">Python</span>
+              <span class="skill-status">🔒 Bloqueado</span>
+            </div>
+            <div class="skill-node locked">
+              <span class="skill-icon"><img src="assets/hab_node.png" alt="Node.js"></span>
+              <span class="skill-name">Node.js</span>
+              <span class="skill-status">🔒 Bloqueado</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="divisor-rpg">⚙️ ──────── ⚙️ ──────── ⚙️</div>
+
+        <!-- Habilidades Passivas -->
+        <h3 class="skill-cat-title" style="color: #8b5a2b;">Habilidades Passivas</h3>
+        <div class="passivas-container">
+          <div class="passiva-item">
+            <span class="passiva-icon">🧠</span>
+            <div>
+              <h4 class="passiva-nome">Raciocínio Lógico</h4>
+              <p class="passiva-desc">+50% de precisão ao solucionar algoritmos. Facilita a visualização do "Big
+                Picture" do código.</p>
+            </div>
+          </div>
+          <div class="passiva-item">
+            <span class="passiva-icon">📈</span>
+            <div>
+              <h4 class="passiva-nome">Aprendizado Acelerado</h4>
+              <p class="passiva-desc">Ganho de XP passivo aumentado. Capacidade de absorver novas tecnologias e
+                documentações rapidamente.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TEMPLATE: PROJETOS (Em construção) -->
+    <div id="template-projetos">
+      <h2 class="titulo-modal">Complexo de Projetos</h2>
+      <div class="texto-padrao">
+        <p>Aqui desenvolvi o projeto Jovem Tech e outras soluções práticas para problemas reais.</p>
+        <p><em>(Inventário de Projetos em construção...)</em></p>
+      </div>
+    </div>
+
+    <!-- TEMPLATE: PORTO (Gatilho Final) -->
+    <div id="template-porto">
+      <h2 class="titulo-modal">O Porto</h2>
+      <div class="texto-padrao">
+        <p>Pronto para explorar novos horizontes. Entre em contato comigo!</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
