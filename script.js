@@ -24,7 +24,7 @@ document.addEventListener('keydown', (event) => {
 
 const character = document.getElementById('character');
 const modalContainer = document.getElementById('modal-container');
-const modalBody = document.getElementById('modal-body'); // Agora usamos apenas o container do corpo
+const modalBody = document.getElementById('modal-body'); 
 
 // --- SISTEMA DE MOVIMENTAÇÃO (MOUSE E TECLADO) ---
 const pathOrder = ['start', 'sobre', 'skills', 'projetos', 'porto'];
@@ -124,7 +124,7 @@ function moveTo(sectionId) {
     }
 }
 
-// --- LÓGICA ATUALIZADA DO MODAL COM TEMPLATES ---
+// --- LÓGICA ATUALIZADA DO MODAL COM TEMPLATES E LARGURA DINÂMICA ---
 function openModal(sectionId) {
     if (sectionId === 'start') return;
 
@@ -134,6 +134,15 @@ function openModal(sectionId) {
     if (templateContent) {
         // Injeta o conteúdo no corpo do modal
         modalBody.innerHTML = templateContent.innerHTML;
+        
+        // Aumenta a largura apenas se for a aba de projetos
+        const modalContentBox = document.querySelector('.modal-content');
+        if (sectionId === 'projetos') {
+            modalContentBox.classList.add('modal-largo');
+        } else {
+            modalContentBox.classList.remove('modal-largo');
+        }
+
         modalContainer.classList.remove('hidden');
     }
 }
