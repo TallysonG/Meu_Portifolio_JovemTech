@@ -93,7 +93,6 @@
   <div id="modal-container" class="hidden">
     <div class="modal-content">
       <button onclick="closeModal()" class="close-btn">X</button>
-      <!-- O conteúdo das páginas será injetado aqui dentro -->
       <div id="modal-body"></div>
     </div>
   </div>
@@ -158,14 +157,18 @@
           </div>
         </div>
 
-        <div class="divisor-rpg">⚙️ ──────── ⚙️ ──────── ⚙️</div>
+        <div class="divisor-rpg">
+          <img src="assets/divisor.png" alt="Divisor Pixel">
+        </div>
 
         <div class="ficha-secao">
           <h3 class="secao-titulo">☕ MISSÃO ATUAL ⚙️</h3>
           <p>Transformar lógica e código em soluções reais e escaláveis.</p>
         </div>
 
-        <div class="divisor-rpg">⚙️ ──────── ⚙️ ──────── ⚙️</div>
+        <div class="divisor-rpg">
+          <img src="assets/divisor.png" alt="Divisor Pixel">
+        </div>
 
         <div class="ficha-secao">
           <h3 class="secao-titulo">&lt;/&gt; BACKGROUND 🕹️</h3>
@@ -180,37 +183,61 @@
       <h2 class="titulo-modal">ÁRVORE DE HABILIDADES</h2>
 
       <div class="habilidades-container">
+
         <!-- Categoria 1: Front-end Base -->
         <div class="skill-category">
           <h3 class="skill-cat-title">Fundamentos Web</h3>
           <div class="skill-nodes">
-            <!-- HTML -->
+
+            <!-- CARTA 1: HTML -->
             <div class="skill-node active">
-              <span class="skill-icon"><img src="assets/hab_html.png" alt="HTML"></span>
-              <span class="skill-name">HTML</span>
-              <div class="skill-bar">
-                <div class="skill-fill" style="width: 25%;"></div>
+              <div class="skill-card-inner">
+                <div class="card-front">
+                  <span class="skill-icon"><img src="assets/hab_html.png" alt="HTML"></span>
+                  <span class="skill-name">HTML</span>
+                </div>
+                <div class="card-back">
+                  <ul class="skill-stats">
+                    <li>✔️ Tags Semânticas</li>
+                    <li>✔️ Estruturação Web</li>
+                  </ul>
+                </div>
               </div>
-              <span class="skill-lvl">Nv. 1 (Iniciante)</span>
             </div>
-            <!-- CSS -->
+
+            <!-- CARTA 2: CSS -->
             <div class="skill-node active">
-              <span class="skill-icon"><img src="assets/hab_css.png" alt="CSS"></span>
-              <span class="skill-name">CSS</span>
-              <div class="skill-bar">
-                <div class="skill-fill" style="width: 25%;"></div>
+              <div class="skill-card-inner">
+                <div class="card-front">
+                  <span class="skill-icon"><img src="assets/hab_css.png" alt="CSS"></span>
+                  <span class="skill-name">CSS</span>
+                </div>
+                <div class="card-back">
+                  <ul class="skill-stats">
+                    <li>✔️ Flexbox</li>
+                    <li>✔️ Media Queries</li>
+                    <li>✔️ Layouts</li>
+                  </ul>
+                </div>
               </div>
-              <span class="skill-lvl">Nv. 1 (Iniciante)</span>
             </div>
-            <!-- JavaScript -->
+
+            <!-- CARTA 3: JAVASCRIPT -->
             <div class="skill-node active">
-              <span class="skill-icon"><img src="assets/hab_js.png" alt="JavaScript"></span>
-              <span class="skill-name">JavaScript</span>
-              <div class="skill-bar">
-                <div class="skill-fill" style="width: 20%;"></div>
+              <div class="skill-card-inner">
+                <div class="card-front">
+                  <span class="skill-icon"><img src="assets/hab_js.png" alt="JavaScript"></span>
+                  <span class="skill-name">JavaScript</span>
+                </div>
+                <div class="card-back">
+                  <ul class="skill-stats">
+                    <li>✔️ Acesso ao DOM</li>
+                    <li>✔️ Lógica Condicional</li>
+                  </ul>
+                </div>
               </div>
-              <span class="skill-lvl">Nv. 1 (Iniciante)</span>
             </div>
+
           </div>
         </div>
 
@@ -218,14 +245,23 @@
         <div class="skill-category">
           <h3 class="skill-cat-title">Inventário & Save States</h3>
           <div class="skill-nodes">
+
+            <!-- CARTA 4: GIT & GITHUB -->
             <div class="skill-node active">
-              <span class="skill-icon"><img src="assets/hab_git.png" alt="Git"></span>
-              <span class="skill-name">Git/GitHub</span>
-              <div class="skill-bar">
-                <div class="skill-fill" style="width: 35%;"></div>
+              <div class="skill-card-inner">
+                <div class="card-front">
+                  <span class="skill-icon"><img src="assets/hab_git.png" alt="Git"></span>
+                  <span class="skill-name">Git/GitHub</span>
+                </div>
+                <div class="card-back">
+                  <ul class="skill-stats">
+                    <li>✔️ Versionamento</li>
+                    <li>✔️ Commits Locais</li>
+                  </ul>
+                </div>
               </div>
-              <span class="skill-lvl">Nv. 1 (Funcional)</span>
             </div>
+
           </div>
         </div>
 
@@ -246,7 +282,9 @@
           </div>
         </div>
 
-        <div class="divisor-rpg">⚙️ ──────── ⚙️ ──────── ⚙️</div>
+        <div class="divisor-rpg">
+          <img src="assets/divisor.png" alt="Divisor Pixel">
+        </div>
 
         <!-- Habilidades Passivas -->
         <h3 class="skill-cat-title" style="color: #8b5a2b;">Habilidades Passivas</h3>
@@ -281,14 +319,14 @@
         <!-- PROJETO 1: O Relógio Tarefeiro -->
         <div class="projeto-card">
           <div class="projeto-img-box">
-            <!-- Ilustração do Canva (relógio, calendário, clima, etc) -->
             <img src="assets/proj_clima.png" alt="O Relógio Tarefeiro">
             <span class="status-tag">Status:<br>CONCLUÍDO</span>
           </div>
 
           <div class="projeto-conteudo">
             <h3 class="projeto-titulo">MISSÃO 1: O Relógio Tarefeiro</h3>
-            <p class="projeto-desc">Lista de tarefas inteligente com manipulação de DOM. O tema da interface se adapta automaticamente baseando-se no horário e no consumo de API de clima local.</p>
+            <p class="projeto-desc">Lista de tarefas inteligente com manipulação de DOM. O tema da interface se adapta
+              automaticamente baseando-se no horário e no consumo de API de clima local.</p>
 
             <div class="projeto-infos">
               <div class="projeto-techs">
@@ -296,25 +334,24 @@
                 <div class="tech-item"><img src="assets/hab_css.png" alt="CSS"></div>
                 <div class="tech-item"><img src="assets/hab_js.png" alt="JS"></div>
               </div>
-              
+
               <div class="projeto-badge">
-                  <span class="badge-label">Badge Rewards:</span>
-                  <div class="badges-row">
-                      <!-- Recompensa 1 -->
-                      <div class="badge-item">
-                          <div class="badge-icon"><img src="assets/badge_tempo.gif" alt="Mestre do Tempo"></div>
-                          <span class="badge-nome">Mestre do Tempo</span>
-                      </div>
-                      <!-- Recompensa 2 -->
-                      <div class="badge-item">
-                          <div class="badge-icon"><img src="assets/badge_pesador.png" alt="Pesador de clima"></div>
-                          <span class="badge-nome">Pesador de Clima</span>
-                      </div>
+                <span class="badge-label">Badge Rewards:</span>
+                <div class="badges-row">
+                  <div class="badge-item">
+                    <div class="badge-icon"><img src="assets/badge_tempo.gif" alt="Mestre do Tempo"></div>
+                    <span class="badge-nome">Mestre do Tempo</span>
                   </div>
+                  <div class="badge-item">
+                    <div class="badge-icon"><img src="assets/badge_pesador.png" alt="Pesador de clima"></div>
+                    <span class="badge-nome">Pesador de Clima</span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <a href="https://github.com/TallysonG/Relogio_Tarefeiro" target="_blank" class="btn-pixel btn-explorar">Explorar Detalhes</a>
+            <a href="https://github.com/TallysonG/Relogio_Tarefeiro" target="_blank"
+              class="btn-pixel btn-explorar">Explorar Detalhes</a>
           </div>
         </div>
 
@@ -336,25 +373,24 @@
                 <div class="tech-item"><img src="assets/hab_css.png" alt="CSS"></div>
                 <div class="tech-item"><img src="assets/hab_js.png" alt="JS"></div>
               </div>
-              
+
               <div class="projeto-badge">
-                  <span class="badge-label">Badge Rewards:</span>
-                  <div class="badges-row">
-                      <!-- Recompensa 1 -->
-                      <div class="badge-item">
-                          <div class="badge-icon"><img src="assets/badge_titanio.png" alt="Badge Titânio"></div>
-                          <span class="badge-nome">Memória de Titânio</span>
-                      </div>
-                      <!-- Recompensa 2 -->
-                      <div class="badge-item">
-                          <div class="badge-icon"><img src="assets/badge_esquecedor.png" alt="Badge Esquecedor"></div>
-                          <span class="badge-nome">Esquecedor Galáctico</span>
-                      </div>
+                <span class="badge-label">Badge Rewards:</span>
+                <div class="badges-row">
+                  <div class="badge-item">
+                    <div class="badge-icon"><img src="assets/badge_titanio.png" alt="Badge Titânio"></div>
+                    <span class="badge-nome">Memória de Titânio</span>
                   </div>
+                  <div class="badge-item">
+                    <div class="badge-icon"><img src="assets/badge_esquecedor.png" alt="Badge Esquecedor"></div>
+                    <span class="badge-nome">Esquecedor Galáctico</span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <a href="https://github.com/TallysonG/Jogo_Memoria" target="_blank" class="btn-pixel btn-explorar">Explorar Detalhes</a>
+            <a href="https://github.com/TallysonG/Jogo_Memoria" target="_blank" class="btn-pixel btn-explorar">Explorar
+              Detalhes</a>
           </div>
         </div>
 
