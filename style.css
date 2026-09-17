@@ -122,6 +122,10 @@ body {
   margin-right: 5px;
 }
 
+#hitbox-porto .icone-dialogo {
+  transform: scale(1.2); /* Diminui a escala exclusivamente do ícone do LinkedIn */
+}
+
 .texto-dialogo {
   font-family: 'VT323', monospace;
   font-size: 24px;
@@ -169,7 +173,8 @@ body {
   border-radius: 4px;
   padding: 30px;
   padding-top: 40px;
-  width: 550px;
+  width: 450px;
+  /* VOLTOU PARA O TAMANHO ORIGINAL (Habilidades e Porto) */
   max-width: 100%;
   max-height: 95vh;
   overflow-y: auto;
@@ -179,21 +184,29 @@ body {
   transition: width 0.3s ease;
 }
 
+.modal-medio {
+  width: 550px !important;
+  /* LARGURA EXCLUSIVA PARA "SOBRE MIM" */
+}
+
 .modal-largo {
   width: 760px !important;
+  /* LARGURA EXCLUSIVA PARA "PROJETOS" */
 }
 
 /* --- SCROLLBARS CUSTOMIZADAS UNIFICADAS --- */
 .modal-content::-webkit-scrollbar,
 .habilidades-container::-webkit-scrollbar,
-.projetos-container::-webkit-scrollbar {
+.projetos-container::-webkit-scrollbar,
+.ficha-personagem::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
 .modal-content::-webkit-scrollbar-track,
 .habilidades-container::-webkit-scrollbar-track,
-.projetos-container::-webkit-scrollbar-track {
+.projetos-container::-webkit-scrollbar-track,
+.ficha-personagem::-webkit-scrollbar-track {
   background: #e0d5c1;
   border-left: 2px solid #8b5a2b;
   border-top: 2px solid #8b5a2b;
@@ -202,7 +215,8 @@ body {
 
 .modal-content::-webkit-scrollbar-thumb,
 .habilidades-container::-webkit-scrollbar-thumb,
-.projetos-container::-webkit-scrollbar-thumb {
+.projetos-container::-webkit-scrollbar-thumb,
+.ficha-personagem::-webkit-scrollbar-thumb {
   background: #8b5a2b;
   border: 2px solid #333;
   border-radius: 4px;
@@ -249,6 +263,9 @@ body {
   font-family: 'VT323', Courier, monospace;
   color: #333;
   text-align: center;
+  max-height: 75vh; /* Estica bastante, mas aciona a rolagem interna antes de tocar no fundo! */
+  overflow-y: auto; /* A rolagem acontece AQUI DENTRO */
+  padding-right: 10px; /* Garante a distância exata entre a barra e a borda marrom */
 }
 
 .ficha-header {
@@ -812,21 +829,11 @@ body {
   }
 
   .modal-content,
-  .modal-largo {
-    width: 90vw !important;
-    padding: 15px;
-    padding-top: 35px;
-    max-height: 85vh;
-    overflow-y: auto;
-  }
-
-  .close-btn {
-    top: 8px;
-    right: 8px;
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
-    z-index: 100;
+  .modal-largo,
+  .modal-medio {
+    width: 100% !important;
+    padding: 20px 15px;
+    padding-top: 40px;
   }
 
   .ficha-avatar {
@@ -836,7 +843,13 @@ body {
   }
 
   .ficha-valor {
-    font-size: 18px;
+    font-size: 16px;
+  }
+
+ /* Impede que a rolagem interna estoure a janela do celular */
+  .ficha-personagem,
+  .habilidades-container {
+      max-height: 60vh;
   }
 }
 
@@ -879,7 +892,6 @@ body {
   text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
 }
 
-/* Alinhamento perfeito do baralho */
 .skill-nodes {
   display: flex;
   flex-direction: row;
@@ -890,7 +902,6 @@ body {
   width: 100%;
 }
 
-/* --- CARTAS DE HABILIDADE (EFEITO 3D) --- */
 .skill-node {
   background: transparent;
   width: 100px;
@@ -939,7 +950,6 @@ body {
   padding: 5px;
 }
 
-/* Estilos internos da carta (Frente) */
 .skill-icon {
   width: 50px;
   height: 50px;
@@ -965,7 +975,6 @@ body {
   text-align: center;
 }
 
-/* Estilos internos da carta (Verso) */
 .skill-stats {
   list-style: none;
   text-align: left;
@@ -982,7 +991,6 @@ body {
   padding-bottom: 2px;
 }
 
-/* Ajustes Específicos para Cartas Bloqueadas (Python/Node) */
 .skill-node.locked {
   background: #ccc;
   filter: grayscale(100%);
@@ -1005,7 +1013,6 @@ body {
   text-align: center;
 }
 
-/* Habilidades Passivas */
 .passivas-container {
   display: flex;
   flex-direction: column;
