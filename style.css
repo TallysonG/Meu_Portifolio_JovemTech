@@ -413,7 +413,8 @@ body {
   bottom: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1317,14 +1318,11 @@ body {
 
 /* --- COMPENSAÇÃO DE TAMANHO PARA ÍCONES COM BORDA TRANSPARENTE --- */
 
-/* 1. Zoom maior para o braço robótico e o símbolo de programação */
 .jornada-icone img[src*="icone-automacao.png"],
 .jornada-icone img[src*="icone-prog.png"] {
   transform: scale(3.5);
-  /* Aumentei para 3.5x. Se ainda ficar pequeno, mude para 4.0 ou 4.5 */
 }
 
-/* 2. Zoom normal apenas para o livro */
 .jornada-icone img[src*="icone-livro.png"] {
   transform: scale(2.5);
 }
