@@ -265,6 +265,7 @@ body {
   text-align: center;
   max-height: 75vh;
   overflow-y: auto;
+  overflow-x: hidden;
   padding-right: 10px;
 }
 
